@@ -56,7 +56,7 @@ async def async_main() -> None:
     all_time_series = {
         sensor: pd.Series(
             [read_ds18s20_temperature(sensor)],
-            index=pd.to_datetime[datetime.now(timezone)]
+            index=pd.to_datetime([datetime.now(timezone)])
         )
         for sensor in arguments.sensor
     }

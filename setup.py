@@ -12,7 +12,7 @@ from setuptools import setup
 
 setup(
     name="temperature-ds18s20-stanley-driver",
-    version="0.1.0",
+    version="0.1.1",
     description="Records Linux load information to a Stanley database",
     long_description=open("Readme.md").read(),
     author="Claudio Giovanni Mattera",
