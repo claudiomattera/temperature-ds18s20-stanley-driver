@@ -1,0 +1,73 @@
+stages:
+  - build
+  - test
+  - deploy
+  - documentation
+
+
+style check:
+  stage: test
+  image: debian:stable
+  before_script:
+    - apt-get update
+    - apt-get install -y pycodestyle
+  script:
+    - pycodestyle
+  allow_failure: true
+
+
+type check:
+  stage: test
+  image: debian:stable
+  before_script:
+    - apt-get update
+    - apt-get install -y mypy
+  script:
+    - mypy --package ${CI_PROJECT_NAME//-/_}
+  allow_failure: true
+
+
+create deb package:
+  stage: deploy
+  only:
+    - tags
+  image: debian:stable
+  before_script:
+    - apt-get update
+    - apt-get install -y python-stdeb python3-pip python3-all
+    - pip3 install -e .
+  script:
+    - python setup.py --command-packages=stdeb.command sdist_dsc --with-python2=False --with-python3=True bdist_deb
+  artifacts:
+    paths:
+      - deb_dist/python3-${CI_PROJECT_NAME}_${CI_COMMIT_REF_NAME:1}-1_all.deb
+
+
+create wheel package:
+  stage: deploy
+  only:
+    - tags
+  image: debian:stable
+  before_script:
+    - apt-get update
+    - apt-get install -y python3-pip
+  script:
+    - pip3 wheel .
+  artifacts:
+    paths:
+      - '${CI_PROJECT_NAME//-/_}-${CI_COMMIT_REF_NAME:1}-py3-none-any.whl'
+
+
+create tarball:
+  stage: deploy
+  only:
+    - tags
+  image: debian:stable
+  before_script:
+    - apt-get update
+    - apt-get install -y git
+  script:
+    - git archive --format=tar.gz ${CI_COMMIT_REF_NAME} --prefix=${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME:1}/ --output ${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME:1}.tar.gz
+  artifacts:
+    paths:
+      - ${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME:1}.tar.gz
