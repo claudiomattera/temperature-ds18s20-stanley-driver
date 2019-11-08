@@ -62,7 +62,7 @@ async def async_main() -> None:
     }
 
     for sensor, time_series in all_time_series.items():
-        logging.info("Sensor %s: %.2f", time_series)
+        logging.info("Sensor %s: %.2f", sensor, time_series)
 
     readings = {
         "/sensors/temperature/{}".format(sensor): time_series
