@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 # Copyright Claudio Mattera 2019.
-# Copyright Center for Energy Informatics 2018.
 # Distributed under the MIT License.
 # See accompanying file License.txt, or online at
 # https://opensource.org/licenses/MIT
@@ -12,7 +11,7 @@ from setuptools import setup
 
 setup(
     name="temperature-ds18s20-stanley-driver",
-    version="0.1.2",
+    version="0.1.3",
     description="Records Linux load information to a Stanley database",
     long_description=open("Readme.md").read(),
     author="Claudio Giovanni Mattera",

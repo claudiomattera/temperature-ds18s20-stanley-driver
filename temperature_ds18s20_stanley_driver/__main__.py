@@ -126,17 +126,17 @@ def setup_logging(verbose: typing.Optional[int]) -> None:
     )
 
 
-def trap_nan(f):
-    def inner(*args, **kwargs):
+def trap_nan(f: typing.Callable[..., float]) -> typing.Callable[..., float]:
+    def inner(*args: typing.Any, **kwargs: typing.Any) -> float:
         try:
             return f(*args, **kwargs)
-        except:
+        except Exception:
             return float("nan")
     return inner
 
 
 @trap_nan
-def read_ds18s20_temperature(sensor_id):
+def read_ds18s20_temperature(sensor_id: typing.Text) -> float:
     logger = logging.getLogger(__name__)
     filename = "/sys/bus/w1/devices/{}/w1_slave".format(sensor_id)
     with open(filename) as file:
